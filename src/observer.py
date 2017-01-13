@@ -1,24 +1,26 @@
+import constants
+import requests
 import time
 import sys
 
 class Observer:
-    def __init__(self, url: str, email: str = None, interval: int = 5*60):
+    def __init__(self, url, email = None, interval = 5*60):
         self.url = url
         self.email = email
 
         if interval >= 5:
             self.interval = interval
         else:
-            raise ValueError("Can't fetch that regularly.")
+            raise ValueError(constants.FETCH_INTERVAL_ERROR)
 
     def notify(self):
         if self.email:
             pass
         else:
-            raise ValueError("Email is missing")
+            raise ValueError(constants.MISSING_EMAIL_ERROR)
 
     def fetch(self):
-        print("Fetching...")
+        print(constants.FETCH)
 
     def run(self):
         try:
@@ -27,5 +29,5 @@ class Observer:
                 time.sleep(self.interval)
                 
         except KeyboardInterrupt:
-            print("\nExiting...")
+            print(constants.EXIT)
             sys.exit()
