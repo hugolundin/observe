@@ -1,33 +1,20 @@
+from filecmp import dircmp
 import constants
 import requests
-import time
-import sys
+import error
 
 class Observer:
-    def __init__(self, url, email = None, interval = 5*60):
+    def __init__(self, url, email = None, interval=constants.DEFAULT_INTERVAL):
         self.url = url
         self.email = email
 
-        if interval >= 5:
+        if interval >= constants.MIN_INTERVAL:
             self.interval = interval
         else:
-            raise ValueError(constants.FETCH_INTERVAL_ERROR)
+            raise error.IntervalError(constants.FETCH_INTERVAL_ERROR)
 
     def notify(self):
         if self.email:
-            pass
+            print("Email sent")
         else:
-            raise ValueError(constants.MISSING_EMAIL_ERROR)
-
-    def fetch(self):
-        print(constants.FETCH)
-
-    def run(self):
-        try:
-            while True:
-                self.fetch()
-                time.sleep(self.interval)
-                
-        except KeyboardInterrupt:
-            print(constants.EXIT)
-            sys.exit()
+            raise error.EmailError(constants.MISSING_EMAIL_ERROR)
